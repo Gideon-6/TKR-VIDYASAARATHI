@@ -26,7 +26,8 @@ The project follows a modular, role-based design implemented using **Django's Mo
 
 ### Architecture Diagram
 
-![alt text](image.png)
+<img width="940" height="612" alt="image" src="https://github.com/user-attachments/assets/1a006111-3a20-486a-952c-610ee75cd711" />
+
 
 ---
 
