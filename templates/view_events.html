@@ -1,0 +1,76 @@
+{% extends 'adminDashboard.html' %}
+
+{% block main %}
+<div class="container">
+  <h2 class="text-center mb-4">📅 Upcoming College Events</h2>
+  
+   {% if messages %}
+   {% for message in messages %}
+   <p class="text-center text-success">{{message}}</p>
+   {% endfor %}
+   {% endif %}
+
+  {% if page_obj %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for event in page_obj %}
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.event_name }}</h5>
+              <span class="badge bg-primary mb-2">{{ event.category }}</span>
+              <p><strong>Date:</strong> {{ event.event_date|date:"F j, Y" }}</p>
+              <p><strong>Time:</strong> {{ event.event_time|time:"H:i" }}</p>
+              <p class="card-text">{{ event.descritpion }}</p>
+            </div>
+            <div class="card-footer bg-white border-0">
+              <small class="text-muted">👤 {{ event.organizer_name }}</small><br>
+              <small class="text-muted">📧 {{ event.contact_mail }}</small>
+            </div>
+            <a href="{% url 'remove_event' event.id %}" class="btn btn-danger">Remove</a>
+          </div>
+          
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Event pagination" class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+          </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <li class="page-item active">
+              <span class="page-link">{{ num }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Next</span>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% else %}
+    <div class="alert alert-info text-center">No events found.</div>
+  {% endif %}
+</div>
+{% endblock %}

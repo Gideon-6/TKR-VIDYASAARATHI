@@ -1,0 +1,523 @@
+{% extends 'dashboard.html' %}
+
+{% block main %}
+
+    <style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3a0ca3;
+        --accent-color: #4895ef;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4cc9f0;
+        --text-color: #2b2d42;
+        --card-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+        --border-radius: 16px;
+        --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+        --gradient-accent: linear-gradient(135deg, #4895ef 0%, #4cc9f0 100%);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        background: linear-gradient(to bottom, rgba(248, 249, 250, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .search-filter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        background: linear-gradient(to right, rgba(248, 249, 250, 0.7), rgba(255, 255, 255, 0.9));
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 280px;
+        position: relative;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 0.85rem 1.5rem 0.85rem 3.5rem;
+        border: 2px solid rgba(233, 236, 239, 0.8);
+        border-radius: 50px;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(248, 249, 250, 0.6);
+        font-weight: 500;
+        color: var(--dark-color);
+    }
+
+    .search-box input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 4px rgba(72, 149, 239, 0.15);
+        background: white;
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent-color);
+        font-size: 1.2rem;
+    }
+
+    .filter-options {
+        display: flex;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    select {
+        padding: 0.85rem 1.5rem;
+        border: 2px solid rgba(233, 236, 239, 0.8);
+        border-radius: 50px;
+        background: rgba(248, 249, 250, 0.6);
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234861ee' stroke='%234861ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1.25rem center;
+        background-size: 1rem;
+        font-weight: 500;
+        color: var(--dark-color);
+        min-width: 180px;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 4px rgba(72, 149, 239, 0.15);
+        background: white;
+    }
+
+    .filter-btn {
+        padding: 0.85rem 2rem;
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
+    }
+
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+        background: var(--gradient-accent);
+    }
+
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .course-card {
+        background: white;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        position: relative;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.7));
+    }
+
+    .course-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+    }
+
+    .course-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--gradient-primary);
+    }
+
+    .course-content {
+        padding: 2rem;
+    }
+
+    .course-title {
+        font-size: 1.4rem;
+        margin-bottom: 1.25rem;
+        color: var(--dark-color);
+        font-weight: 700;
+        text-align: center;
+        position: relative;
+        padding-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+
+    .course-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--gradient-accent);
+        border-radius: 4px;
+    }
+
+    .course-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
+        font-size: 0.95rem;
+        color: #6c757d;
+    }
+
+    .course-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .course-meta i {
+        color: var(--accent-color);
+        font-size: 1.1rem;
+    }
+
+    .course-instructor {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        color: #495057;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        background: rgba(233, 236, 239, 0.4);
+        border-radius: 8px;
+    }
+
+    .course-instructor::before {
+        content: '\f007';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 0.75rem;
+        color: var(--accent-color);
+        font-size: 1.1rem;
+    }
+
+    .course-description {
+        color: #6c757d;
+        font-size: 0.95rem;
+        margin-bottom: 1.75rem;
+        line-height: 1.8;
+    }
+
+    .course-description p {
+        margin-bottom: 0.75rem;
+        position: relative;
+        padding-left: 1.5rem;
+    }
+
+    .course-description p::before {
+        content: '\f054';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        top: 0.25rem;
+        font-size: 0.8rem;
+        color: var(--accent-color);
+    }
+
+    .enroll-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 1.5rem;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
+    }
+
+    .enroll-btn:hover {
+        background: var(--gradient-accent);
+        box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+        transform: translateY(-3px);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 3rem;
+    }
+
+    .page-btn {
+        padding: 0.75rem 1.25rem;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+        min-width: 45px;
+        text-align: center;
+        color: var(--dark-color);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .page-btn:hover, .page-btn.active {
+        background: var(--gradient-primary);
+        color: white;
+        border-color: var(--primary-color);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .page-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: #e9ecef;
+        transform: none !important;
+    }
+
+    .page-btn i {
+        font-size: 0.9rem;
+    }
+
+    /* Floating animation for cards */
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .course-card {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .course-card:nth-child(2n) {
+        animation-delay: 0.5s;
+    }
+
+    .course-card:nth-child(3n) {
+        animation-delay: 1s;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .courses-grid {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+    }
+
+    @media (max-width: 992px) {
+        .container {
+            padding: 1.5rem;
+        }
+        
+        .search-filter {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .filter-options {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        select, .filter-btn {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1.25rem;
+            margin: 1rem auto;
+            border-radius: 12px;
+        }
+        
+        .course-content {
+            padding: 1.5rem;
+        }
+        
+        .course-title {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .courses-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .course-card {
+            animation: none;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .pagination {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+    <main class="container" style="background-color: rgb(197, 199, 199);">
+       <div class="search-filter">
+    <form action="{% url 'view_course_student' %}" method="post">
+        {% csrf_token %}
+        <div class="filter-options">
+            <!-- Academic Year Dropdown -->
+            <select name="academic_year" class="dropdown">
+                <option value="">Academic Years</option>
+                {% for i in get_academic_years %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+                <!-- Add more academic years as needed -->
+            </select>
+
+            <!-- Semester Dropdown -->
+            <select name="semester" class="dropdown">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+            </select>
+        </div>
+        <button type="submit" class="filter-btn mt-3">Apply Filters</button>
+    </form>
+</div>
+
+        <div class="courses-grid">
+            {% for course in page_obj %}
+            <div class="course-card">
+                <div class="course-content">
+                    <h3 class="course-title">{{ course.department }}</h3>
+                    
+                    <div class="course-instructor">
+                        <i class="fa-solid fa-user-tie me-2"></i>
+                        <span>{{ course.user.first_name }} {{ course.user.last_name }}</span>
+                    </div>
+                    <div>
+                        <p>Subject:<span class="text-primary ms-2">{{course.subject}}</span></p>
+                    </div>
+                    
+                    <!-- {% for syllabus in get_syllabus %}
+                        {% if syllabus.uploaded_by == course.user %}
+                            {% if forloop.first %}
+                                <h3 class="course-title">{{ syllabus.title }}</h3>
+                                <div class="course-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> {{ syllabus.academic_year|default:"N/A" }}</span>
+                                    <span><i class="fas fa-clock"></i>Sem - {{ syllabus.semester|default:"N/A" }}</span>
+                                </div>
+                                <div class="course-meta">
+                                    <span><i class="fas fa-hashtag"></i> {{ syllabus.title_code }}</span>
+                                    <span><i class="fas fa-book"></i> 5 Units</span>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %} -->
+                
+                    <!-- Course units -->
+                    <!-- {% for syllabus in get_syllabus %}
+                        {% if syllabus.uploaded_by == course.user %}
+                            <p class="course-description">
+                                {{forloop.counter}}. {{ syllabus.unit_title }}   
+                            </p>
+                        {% endif %}
+                    {% endfor %} -->
+
+                    <a href="{% url 'view_syllabus_student' course.user_id course.subject %}" class="enroll-btn">View Syllabus</a>
+                            
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Paginator -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <button class="page-btn" onclick="window.location.href='?page={{ page_obj.previous_page_number }}'">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            {% else %}
+                <button class="page-btn disabled">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            {% endif %}
+            
+            <!-- Loop through the page numbers and highlight the active page -->
+            {% for num in page_obj.paginator.page_range %}
+                <button class="page-btn {% if page_obj.number == num %}active{% endif %}" 
+                        onclick="window.location.href='?page={{ num }}'">
+                    {{ num }}
+                </button>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+                <button class="page-btn" onclick="window.location.href='?page={{ page_obj.next_page_number }}'">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            {% else %}
+                <button class="page-btn disabled">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            {% endif %}
+        </div>
+    </main>
+
+{% endblock %}
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}

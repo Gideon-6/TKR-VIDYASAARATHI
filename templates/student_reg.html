@@ -1,0 +1,405 @@
+{% extends 'index.html' %}
+
+{% block nav %}
+{% endblock %}
+
+{% block main %}
+
+<style>
+        :root {
+            --primary-color: #8eddfc;
+            --primary-dark: #c8cff0;
+            --secondary-color: #625ead;
+            --text-color: #2b2d42;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #adb5bd;
+            --white: #ffffff;
+            --error-color: #ef233c;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+        }
+        .custom{
+            margin-left: 90px;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+        }
+        
+        .registration-container {
+            min-height: 100vh;
+        }
+        
+        .registration-card {
+            max-width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+            font-weight: 400;
+        }
+        
+        .form-side {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem;
+        }
+        
+        .benefit-item {
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-item i {
+            margin-right: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .password-strength {
+            height: 5px;
+            background-color: var(--medium-gray);
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .is-invalid {
+            border-color: var(--error-color) !important;
+        }
+        
+        .invalid-feedback {
+            color: var(--error-color);
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+        }
+        
+        @media (max-width: 991.98px) {
+            .form-side {
+                display: none;
+                
+            }
+            .custom{
+            margin-left: 82px;
+        }
+        }
+</style>
+
+<div class="container-fluid registration-container d-flex justify-content-center align-items-center p-3">
+        <div class="card registration-card">
+            <div class="row g-0">
+                <!-- Registration Form -->
+                <div class="col-md-7 p-4 p-md-5">
+                    <div class="card-body">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p class="text-danger text-center">{{message}}</p>
+                        {% endfor %}
+                        {% endif %}
+                        <div class="text-center mb-4">
+                            <div class="logo mb-3">
+                                <i class="fas fa-graduation-cap fa-2x me-2"></i>
+                                <span class="h3">Edu<span>Portal</span></span>
+                            </div>
+                            <h2 class="h4">Student Registration</h2>
+                            <p class="text-muted">Create your account to access learning resources</p>
+                        </div>
+                        
+                        <form action="{% url 'student_reg' %}" method="post" id="registrationForm" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                    <div class="invalid-feedback">Please enter your first name</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                    <div class="invalid-feedback">Please enter your last name</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="invalid-feedback">Please enter a valid email address</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="invalid-feedback">Please enter a valid phone number</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="studentImage" class="form-label">Student Image <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" id="studentImage" accept="image/*" name="studentImage" required>
+                                <div class="invalid-feedback">Please upload a valid image file</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <span class="password-toggle" onclick="togglePassword('password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                                <div class="password-strength mt-2">
+                                    <div class="password-strength-bar" id="passwordStrength"></div>
+                                </div>
+                                <small class="text-muted" id="strengthText">Password strength: Weak</small>
+                                <div class="invalid-feedback">Please enter a password</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                    <span class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                                <div class="invalid-feedback">Passwords do not match</div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="dob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="dob" name="dob" required>
+                                    <div class="invalid-feedback">Please enter your date of birth</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select class="form-select" id="gender" name="gender">
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                        <option value="prefer-not-to-say">Prefer not to say</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="course" class="form-label">Select Course <span class="text-danger">*</span></label>
+                                <select class="form-select" id="course" name="course" required>
+                                    <option value="">Select your course</option>
+                                    <option value="computer-science">Computer Science</option>
+                                    <option value="data-science">Data Science</option>
+                                    <option value="engineering">Engineering</option>
+                                    <option value="business">Business Administration</option>
+                                    <option value="medicine">Medicine</option>
+                                    <option value="arts">Arts & Humanities</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a course</div>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label" for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback">You must agree to the terms</div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                Create Account <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                            
+                            <div class="text-center mt-3">
+                                <small class="text-muted">Already have an account? <a href="{% url 'student_log' %}">Sign in</a></small>
+                            </div>
+                            
+                        </form>
+                        
+                    </div>
+                    <a href="{% url 'index' %}" class=" custom btn btn-primary w-50 mb-2 text-center">Back to Home</a>
+                </div>
+                
+                <!-- Benefits Side (Desktop only) -->
+                <div class="col-md-5 d-none d-md-block form-side">
+                    <div class="h-100 d-flex flex-column justify-content-center">
+                        <h2 class="h3 mb-4">Join Our Learning Community</h2>
+                        <p class="mb-4 opacity-75">Access thousands of courses, resources, and connect with fellow students.</p>
+                        
+                        <div class="benefits-list">
+                            <div class="benefit-item d-flex align-items-center">
+                                <i class="fas fa-book-open fa-lg"></i>
+                                <span>Comprehensive Learning Materials</span>
+                            </div>
+                            <div class="benefit-item d-flex align-items-center">
+                                <i class="fas fa-chalkboard-teacher fa-lg"></i>
+                                <span>Expert Instructors</span>
+                            </div>
+                            <div class="benefit-item d-flex align-items-center">
+                                <i class="fas fa-certificate fa-lg"></i>
+                                <span>Certification Programs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Minimal JavaScript -->
+    <script>
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.nextElementSibling.querySelector('i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+        
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isLongEnough = password.length >= 8;
+            
+            if (hasUpperCase) strength++;
+            if (hasLowerCase) strength++;
+            if (hasNumbers) strength++;
+            if (hasSpecialChars) strength++;
+            if (isLongEnough) strength += 2;
+            
+            let percentage = 0;
+            let color = '';
+            let text = '';
+            
+            if (password.length === 0) {
+                strengthBar.style.width = '0%';
+                strengthText.textContent = '';
+                return;
+            }
+            
+            if (strength <= 2) {
+                percentage = 33;
+                color = 'var(--error-color)';
+                text = 'Weak';
+            } else if (strength <= 4) {
+                percentage = 66;
+                color = 'var(--warning-color)';
+                text = 'Medium';
+            } else {
+                percentage = 100;
+                color = 'var(--success-color)';
+                text = 'Strong';
+            }
+            
+            strengthBar.style.width = percentage + '%';
+            strengthBar.style.backgroundColor = color;
+            strengthText.textContent = 'Password strength: ' + text;
+            strengthText.style.color = color;
+        });
+        
+        // Form validation
+        (function() {
+            'use strict';
+            
+            const form = document.getElementById('registrationForm');
+            
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                // Validate password match
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword');
+                
+                if (password !== confirmPassword.value) {
+                    confirmPassword.classList.add('is-invalid');
+                    confirmPassword.nextElementSibling.textContent = 'Passwords do not match';
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    confirmPassword.classList.remove('is-invalid');
+                }
+                
+                // Validate image file
+                const imageInput = document.getElementById('studentImage');
+                if (imageInput.files.length > 0) {
+                    const file = imageInput.files[0];
+                    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    if (!validImageTypes.includes(file.type)) {
+                        imageInput.classList.add('is-invalid');
+                        imageInput.nextElementSibling.textContent = 'Please upload a valid image file (JPEG, PNG, or GIF)';
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        imageInput.classList.remove('is-invalid');
+                    }
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        })();
+    </script>
+
+{% endblock %}
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}

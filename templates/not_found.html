@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | 404 Error</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #4a6cf7;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 800;
+            color: #4a6cf7;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.05);
+        }
+        
+        .error-message {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        
+        .error-description {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: #4a6cf7;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3a5cd8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #4a6cf7;
+            border: 2px solid #4a6cf7;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(74, 108, 247, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .search-box {
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 16px 60px 16px 20px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: #4a6cf7;
+            border: none;
+            color: white;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box button:hover {
+            background: #3a5cd8;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .footer a {
+            color: #4a6cf7;
+            text-decoration: none;
+        }
+        
+        /* Responsive Design */
+        
+        /* Large devices (desktops, 992px and up) */
+        @media (min-width: 992px) {
+            .container {
+                max-width: 900px;
+            }
+        }
+        
+        /* Medium devices (tablets, 768px to 991px) */
+        @media (max-width: 991px) and (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+            
+            .error-code {
+                font-size: 7rem;
+            }
+            
+            .error-message {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Small devices (landscape phones, 576px to 767px) */
+        @media (max-width: 767px) and (min-width: 576px) {
+            .container {
+                max-width: 540px;
+            }
+            
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            .error-message {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 30px 25px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        /* Extra small devices (portrait phones, less than 576px) */
+        @media (max-width: 575px) {
+            .container {
+                max-width: 100%;
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+            
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .error-message {
+                font-size: 1.4rem;
+            }
+            
+            .error-description {
+                font-size: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 12px 25px;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            .footer {
+                padding: 15px;
+            }
+        }
+        
+        /* Very small devices (less than 400px) */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .error-code {
+                font-size: 4rem;
+            }
+            
+            .error-message {
+                font-size: 1.3rem;
+            }
+            
+            .btn {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Page Not Found</h1>
+            <p>Sorry, we couldn't find what you're looking for</p>
+        </div>
+        
+        <div class="content">
+            <div class="error-code">404</div>
+            <h2 class="error-message">Oops! This page has gone missing</h2>
+        </div>
+        
+        <div class="footer">
+            <p>Need help? <a href="#">Contact our support team</a> or <a href="#">visit our help center</a></p>
+            <p>© 2023 Your Company Name. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple go back functionality
+        document.querySelector('.btn-secondary').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.history.back();
+        });
+        
+        // Simple search functionality
+        document.querySelector('.search-box button').addEventListener('click', function() {
+            const searchQuery = document.querySelector('.search-box input').value;
+            if(searchQuery.trim() !== '') {
+                alert(`Searching for: ${searchQuery}`);
+                // In a real implementation, you would redirect to search results
+            }
+        });
+        
+        // Allow pressing Enter to search
+        document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.querySelector('.search-box button').click();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+{% extends 'dashboard.html' %}
+
+{% block main %}
+<style>
+    /* Base Styles */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Table Styling */
+    #coursesTable th {
+        font-weight: 600;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+    }
+
+    .card-header {
+        border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+
+    .text-muted {
+        font-size: 0.9rem;
+    }
+
+    /* Button Styling */
+    .btn-success {
+        font-size: 1rem;
+    }
+
+    /* Default Styles for All Devices */
+    .row.mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .col-md-4.text-right {
+        text-align: right;
+    }
+
+    /* Table responsiveness for all screen sizes */
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #coursesTable th, #coursesTable td {
+        padding: 10px;
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    /* Responsive Adjustments for Large Devices (Desktop > 992px) */
+    @media (min-width: 992px) {
+        .container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        .card-title {
+            font-size: 2rem;
+        }
+
+        .btn-success {
+            font-size: 1.2rem;
+        }
+
+        .row.mb-4 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .col-md-4.text-right {
+            text-align: right;
+        }
+
+        #coursesTable th, #coursesTable td {
+            padding: 15px;
+            font-size: 1rem;
+        }
+    }
+
+    /* For Medium Devices (Tablets 768px - 991px) */
+    @media (min-width: 768px) and (max-width: 991px) {
+        .container {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+        }
+
+        h5 {
+            font-size: 1.1rem;
+        }
+
+        h6 {
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            font-size: 0.85rem;
+            padding: 0.25rem 1rem;
+        }
+
+        #coursesTable th, #coursesTable td {
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        /* Adjust table responsiveness */
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    /* For Small Devices (Portrait Mobile < 767px) */
+    @media (max-width: 767px) {
+        .container {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+        }
+
+        h5 {
+            font-size: 1rem;
+        }
+
+        h6 {
+            font-size: 0.9rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.4rem;
+        }
+
+        #coursesTable th, #coursesTable td {
+            padding: 8px;
+            font-size: 0.875rem;
+        }
+
+        /* Table responsiveness with horizontal scroll for mobile */
+        .table-responsive {
+            overflow-x: scroll;
+        }
+
+        .row.mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .col-md-8 {
+            text-align: center;
+        }
+
+        .col-md-4.text-right {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .text-muted {
+            font-size: 0.85rem;
+        }
+
+        .btn-success {
+            font-size: 1rem;
+        }
+    }
+
+    /* For Extra Small Devices (Mobile Landscape and Small Phones < 480px) */
+    @media (max-width: 480px) {
+        .container {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        h5 {
+            font-size: 0.95rem;
+        }
+
+        .btn-sm {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.4rem;
+        }
+
+        #coursesTable th, #coursesTable td {
+            padding: 5px;
+            font-size: 0.75rem;
+        }
+
+        .text-muted {
+            font-size: 0.75rem;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .row.mb-4 {
+            flex-direction: column;
+        }
+
+        .col-md-8 {
+            text-align: center;
+        }
+
+        .col-md-4.text-right {
+            text-align: center;
+        }
+
+        .btn-success {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<div class="container py-5" style="background-color: cyan;">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2 class="text-primary"><i class="fas fa-book-open mr-2"></i> Your Courses</h2>
+            <p class="text-muted">Manage question papers for your subjects</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="{% url 'add_syllabus' %}" class="btn btn-success">
+                <i class="fas fa-plus-circle mr-1"></i> Add New Course
+            </a>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <p class="text-center">{{message}}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0"><i class="fas fa-list-alt mr-2"></i> Course List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" id="coursesTable">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Course Title</th>
+                            <th>Course Code</th>
+                            <th>Academic Year</th>
+                            <th>Semester</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in get_faculty_subjects %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ subject.title }}</td>
+                            <td>{{ subject.title_code }}</td>
+                            <td>{{ subject.academic_year|default:"-" }}</td>
+                            <td>{{ subject.semester|default:"-" }}</td>
+                            <td>
+                                <a href="{% url 'add_question_papers_1' subject.title %}" class="btn btn-sm btn-primary" title="Add Question Paper">
+                                    <i class="fas fa-file-pdf mr-1"></i> Add QP
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+                                <p>No courses found. Please add your courses first.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    #coursesTable th {
+        font-weight: 600;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+    @media (max-width: 768px) {
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}

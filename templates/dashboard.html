@@ -1,0 +1,227 @@
+{% extends 'index.html' %}
+
+{% block nav %}
+<style>
+    /* Navbar Styling (No Change - Good as is) */
+    .navbar {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .navbar .navbar-brand h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #003366;
+        letter-spacing: 1px;
+    }
+
+    .navbar .navbar-brand img {
+        height: 60px;
+        margin-right: 10px;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #003366;
+        padding: 10px 15px;
+        transition: color 0.3s;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        color: #FE5D37; /* Primary color */
+    }
+
+    .navbar-toggler {
+        border: 1px solid #003366;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 51, 102, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* --- Media Queries --- */
+
+    /* Tablet/Large Mobile (991.98px) */
+    @media (max-width: 991.98px) {
+        /* Ensure the margin-left style attribute on #navbarCollapse doesn't interfere */
+        #navbarCollapse {
+            margin-left: 0 !important;
+        }
+
+        .navbar-nav .nav-link {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+        }
+
+        .navbar .navbar-brand h1 {
+            font-size: 1.2rem;
+        }
+        
+        /* IMPORTANT: Override the margin-left: 100px from the HTML style attribute for mobile */
+        .navbar-collapse {
+            margin-left: 0 !important;
+        }
+    }
+
+    /* Small Mobile View (max-width: 576px) - Optimizations */
+    @media (max-width: 576px) {
+        .navbar {
+            padding: 0.3rem 0.5rem;
+        }
+        
+        .navbar-brand {
+            flex: 1;
+        }
+        
+        .navbar-brand h1 {
+            font-size: 1rem !important;
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+        
+        .navbar-brand img {
+            height: 40px !important;
+            margin-right: 6px;
+        }
+        
+        .navbar-toggler {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.9rem;
+            border: 1px solid #003366;
+        }
+        
+        /* Mobile menu positioning and style for attraction */
+        .navbar-collapse {
+            margin-left: 0 !important;
+            background: white;
+            /* Use a slight vertical transition for the dropdown */
+            transition: all 0.3s ease-out; 
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-nav {
+            padding: 0.5rem 0;
+        }
+        
+        .navbar-nav .nav-link {
+            font-size: 0.85rem;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .navbar-nav .nav-link:last-child {
+            border-bottom: none;
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #FE5D37;
+            background-color: rgba(254, 93, 55, 0.05);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 2px rgba(254, 93, 55, 0.25);
+        }
+    }
+
+    /* Additional Styles for Dropdowns (No Change - Good as is) */
+    .nav-item.dropdown .dropdown-menu {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .nav-item.dropdown .dropdown-item {
+        padding: 8px 15px;
+        color: #003366;
+    }
+
+    .nav-item.dropdown .dropdown-item:hover {
+        color: #FE5D37;
+        background-color: transparent;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+    <a href="{% url 'dashboard' %}" class="navbar-brand">
+        <h1 class="m-0" style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; color: #003366;">
+            <img src="/static/img/logo.jpeg" style="height: 60px;"> VIDYASARATHI
+        </h1>
+    </a>
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse"> 
+        {% if login == 'student' %}
+        <div class="navbar-nav mx-auto">
+            <a href="{% url 'dashboard' %}" class="nav-item nav-link">Home</a>
+            <a href="{% url 'view_profile_student' %}" class="nav-item nav-link">View Profile</a>
+            <a href="{% url 'view_course_student' %}" class="nav-item nav-link">View Syllabus</a>
+            <a href="{% url 'logout_user' %}" class="nav-item nav-link">Logout</a>
+        </div>
+        {% else %}
+        <div class="navbar-nav mx-auto">
+            <a href="{% url 'dashboard' %}" class="nav-item nav-link">Home</a>
+            <a href="{% url 'view_course' %}" class="nav-item nav-link">View Syllabus</a>
+            <a href="{% url 'add_question_papers' %}" class="nav-item nav-link">Question Papers</a>
+            <a href="{% url 'view_students' %}" class="nav-item nav-link">View Students</a>
+            <a href="{% url 'logout_user' %}" class="nav-item nav-link">Logout</a>
+        </div>
+        {% endif %}
+    </div>
+</nav>
+
+<script>
+    // CLEANED UP JAVASCRIPT:
+    // We removed the custom toggle logic as Bootstrap handles it automatically.
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbarCollapse = document.querySelector('#navbarCollapse');
+        const navbarToggler = document.querySelector('.navbar-toggler');
+
+        // Logic 1: Close navbar when clicking on a nav link (Mobile)
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Check if the menu is open and we are on a small screen
+                if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
+                    // Use Bootstrap's native method to trigger the collapse
+                    const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
+                        toggle: false
+                    });
+                    bsCollapse.hide();
+                }
+            });
+        });
+
+        // Logic 2: Close navbar on resize from small to large screen (Desktop/Tablet)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                 // Ensure the 'show' class is present on desktop
+                 navbarCollapse.classList.add('show');
+            } else {
+                 // Ensure 'aria-expanded' is updated if manually toggled
+                 if (navbarCollapse.classList.contains('show')) {
+                     navbarToggler.setAttribute('aria-expanded', 'true');
+                 } else {
+                     navbarToggler.setAttribute('aria-expanded', 'false');
+                 }
+            }
+        });
+        
+        // Ensure the initial state is correct for desktop
+        if (window.innerWidth >= 992) {
+             navbarCollapse.classList.add('show');
+        }
+    });
+</script>
+
+{% endblock %}

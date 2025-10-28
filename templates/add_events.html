@@ -1,0 +1,60 @@
+{% extends 'adminDashboard.html' %}
+
+{% block main %}
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            {% if messages %}
+            {% for message in messages %}
+            <p class="text-center text-success">{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            <h2 class="card-title text-center mb-4">College Event Registration</h2>
+            <form action="{% url 'add_events' %}" method="post" id="eventForm">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="eventName" class="form-label">Event Name</label>
+                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter event name" required>
+              </div>
+              <div class="mb-3">
+                <label for="eventDate" class="form-label">Event Date</label>
+                <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+              </div>
+              <div class="mb-3">
+                <label for="eventTime" class="form-label">Event Time</label>
+                <input type="time" class="form-control" id="eventTime" name="eventTime" required>
+              </div>
+              <div class="mb-3">
+                <label for="eventCategory" class="form-label">Category</label>
+                <select class="form-select" id="eventCategory" name="eventCategory" required>
+                  <option value="" disabled selected>Select category</option>
+                  <option value="Workshop">Workshop</option>
+                  <option value="Seminar">Seminar</option>
+                  <option value="Cultural">Cultural</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="eventDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="eventDescription" name="eventDescription" rows="4" placeholder="Describe the event" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="organizerName" class="form-label">Organizer Name</label>
+                <input type="text" class="form-control" id="organizerName" name="organizerName" placeholder="Enter organizer name" required>
+              </div>
+              <div class="mb-3">
+                <label for="contactEmail" class="form-label">Contact Email</label>
+                <input type="email" class="form-control" id="contactEmail" name="contactEmail" placeholder="Enter contact email" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Submit Event</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

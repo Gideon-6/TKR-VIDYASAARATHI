@@ -1,0 +1,1227 @@
+/********** Template CSS **********/
+:root {
+    --primary: #FE5D37;
+    --light: #FFF5F3;
+    --dark: #103741;
+}
+
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 45px;
+    bottom: 45px;
+    z-index: 99;
+}
+
+/*** Spinner ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+/*** Button ***/
+.btn {
+    font-weight: 500;
+    transition: .5s;
+}
+
+.btn.btn-primary {
+    color: #FFFFFF;
+}
+
+.btn-square {
+    width: 38px;
+    height: 38px;
+}
+
+.btn-sm-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    border-radius: 50px;
+}
+
+/*** Heading ***/
+h1,
+h2,
+h3,
+h4,
+.h1,
+.h2,
+.h3,
+.h4,
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6 {
+    font-family: 'Lobster Two', cursive;
+    font-weight: 700;
+}
+
+h5,
+h6,
+.h5,
+.h6 {
+    font-weight: 600;
+}
+
+.font-secondary {
+    font-family: 'Lobster Two', cursive;
+}
+
+/*** Navbar ***/
+.navbar .navbar-nav .nav-link {
+    padding: 30px 15px;
+    color: var(--dark);
+    font-weight: 500;
+    outline: none;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+}
+
+.navbar.sticky-top {
+    top: -100px;
+    transition: .5s;
+}
+
+.navbar .dropdown-toggle::after {
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    vertical-align: middle;
+    margin-left: 5px;
+    transition: .5s;
+}
+
+.navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+/* Ensure dropdowns are controlled by Bootstrap's JavaScript */
+.navbar .nav-item .dropdown-menu {
+    display: none;
+}
+
+.navbar .nav-item.show .dropdown-menu {
+    display: block;
+}
+
+@media (max-width: 991.98px) {
+    /* -------------------------------------- */
+    /* Mobile Navbar Dropdown Fix (Crucial)   */
+    /* -------------------------------------- */
+    .navbar .navbar-nav .nav-link {
+        margin-right: 0;
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .navbar .navbar-nav {
+        margin-top: 10px;
+        border-top: 1px solid #EEEEEE;
+    }
+
+    /* 1. Reset dropdown positioning for mobile */
+    .navbar .nav-item .dropdown-menu {
+        /* KEY FIX: Allows dropdown to stack vertically inside the collapsed menu */
+        display: none;
+        position: static; 
+        background: #fff;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0 15px;
+        width: 100%;
+        transition: none;
+        opacity: 1;
+    }
+
+    /* 2. Make the menu visible when Bootstrap adds the 'show' class */
+    .navbar .nav-item.show .dropdown-menu {
+        display: block;
+        padding: 10px 15px;
+    }
+
+    .navbar .dropdown-menu .dropdown-item {
+        padding: 8px 15px;
+        font-size: 0.95rem;
+        color: var(--dark);
+    }
+
+    .navbar .dropdown-menu .dropdown-item:hover {
+        color: var(--primary);
+        background: transparent;
+    }
+
+    /* 3. Ensure dropdown toggle is styled correctly */
+    .navbar .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    /* 4. Ensure caret icon works */
+    .navbar .dropdown-toggle::after {
+        content: "\f107";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        border: none;
+        transition: transform 0.3s;
+    }
+    
+    .navbar .dropdown-toggle[aria-expanded="true"]::after {
+        transform: rotate(-180deg);
+    }
+    #buttom{
+        margin-left: 90px;
+    }
+    #text{
+        margin-left: -85px;
+    }
+    
+    /* -------------------------------------- */
+    /* General Responsive Improvements        */
+    /* -------------------------------------- */
+
+    /* Adjust Header Carousel Height on Tablets/Small Laptops */
+    .header-carousel .owl-carousel-item img {
+        height: 450px; 
+    }
+
+    /* Fix About Section Image Stacking on Tablets/Small Laptops */
+    .about-img .col-6 {
+        margin-top: 20px !important; 
+    }
+    .about-img .col-12 {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* -------------------------------------- */
+    /* Logo Scaling                           */
+    /* -------------------------------------- */
+    .navbar-brand h1 {
+        font-size: 1.5rem !important;
+    }
+    .navbar-brand img {
+        height: 40px !important;
+    }
+}
+
+/* Media Query for Extra Small Phones (Max 575.98px) */
+@media (max-width: 575.98px) {
+    /* -------------------------------------- */
+    /* Header Carousel Height (Smallest Screens) */
+    /* -------------------------------------- */
+    .header-carousel .owl-carousel-item img {
+        height: 300px;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar .nav-item .dropdown-menu {
+        display: block;
+        top: calc(100% - 15px);
+        margin-top: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .3s, visibility .3s;
+    }
+
+    .navbar .nav-item:hover .dropdown-menu {
+        top: 100%;
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+/*** Header ***/
+.header-carousel::before,
+.header-carousel::after,
+.page-header::before,
+.page-header::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 10px;
+    top: 0;
+    left: 0;
+    background: url(../img/bg-header-top.png) center center repeat-x;
+    z-index: 1;
+}
+
+.header-carousel::after,
+.page-header::after {
+    height: 19px;
+    top: auto;
+    bottom: 0;
+    background: url(../img/bg-header-bottom.png) center center repeat-x;
+}
+
+@media (max-width: 768px) {
+    .header-carousel .owl-carousel-item {
+        position: relative;
+        min-height: 500px;
+    }
+    
+    .header-carousel .owl-carousel-item img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .header-carousel .owl-carousel-item p {
+        font-size: 16px !important;
+        font-weight: 400 !important;
+    }
+
+    .header-carousel .owl-carousel-item h1 {
+        font-size: 30px;
+        font-weight: 600;
+    }
+}
+
+.header-carousel .owl-nav {
+    position: absolute;
+    top: 50%;
+    right: 8%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+}
+
+.header-carousel .owl-nav .owl-prev,
+.header-carousel .owl-nav .owl-next {
+    margin: 7px 0;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background: transparent;
+    border: 1px solid #FFFFFF;
+    border-radius: 45px;
+    font-size: 22px;
+    transition: .5s;
+}
+
+.header-carousel .owl-nav .owl-prev:hover,
+.header-carousel .owl-nav .owl-next:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.page-header {
+    background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), url(../img/carousel-1.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, .5);
+}
+
+/*** Facility ***/
+.facility-item .facility-icon {
+    position: relative;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.facility-item .facility-icon::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, .9);
+    transition: .5s;
+    z-index: 1;
+}
+
+.facility-item .facility-icon span {
+    position: absolute;
+    content: "";
+    width: 15px;
+    height: 30px;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+}
+
+.facility-item .facility-icon span:last-child {
+    left: auto;
+    right: 0;
+}
+
+.facility-item .facility-icon i {
+    position: relative;
+    z-index: 2;
+}
+
+.facility-item .facility-text {
+    position: relative;
+    min-height: 250px;
+    padding: 30px;
+    border-radius: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.facility-item .facility-text::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, .9);
+    transition: .5s;
+    z-index: 1;
+}
+
+.facility-item .facility-text * {
+    position: relative;
+    z-index: 2;
+}
+
+.facility-item:hover .facility-icon::before,
+.facility-item:hover .facility-text::before {
+    background: transparent;
+}
+
+.facility-item * {
+    transition: .5s;
+}
+
+.facility-item:hover * {
+    color: #FFFFFF !important;
+}
+
+/*** About ***/
+.about-img img {
+    transition: .5s;
+}
+
+.about-img img:hover {
+    background: var(--primary) !important;
+}
+
+/*** Classes ***/
+.classes-item {
+    transition: .5s;
+}
+
+.classes-item:hover {
+    margin-top: -10px;
+}
+
+/*** Team ***/
+.team-item .team-text {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #FFFFFF;
+    border: 17px solid var(--light);
+    border-radius: 250px;
+    transition: .5s;
+}
+
+.team-item:hover .team-text {
+    border-color: var(--primary);
+}
+
+/*** Testimonial ***/
+.testimonial-carousel {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+@media (min-width: 576px) {
+    .testimonial-carousel {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+}
+
+.testimonial-carousel .testimonial-item .border {
+    border: 1px dashed rgba(0, 185, 142, .3) !important;
+}
+
+.testimonial-carousel .owl-nav {
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+.testimonial-carousel .owl-nav .owl-prev,
+.testimonial-carousel .owl-nav .owl-next {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background: var(--primary);
+    border-radius: 45px;
+    font-size: 20px;
+    transition: .5s;
+}
+
+.testimonial-carousel .owl-nav .owl-prev:hover,
+.testimonial-carousel .owl-nav .owl-next:hover {
+    background: var(--dark);
+}
+
+/*** Footer ***/
+.footer .btn.btn-social {
+    margin-right: 5px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 45px;
+    transition: .3s;
+}
+
+.footer .btn.btn-social:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.footer .btn.btn-link {
+    display: block;
+    margin-bottom: 5px;
+    padding: 0;
+    text-align: left;
+    font-size: 16px;
+    font-weight: normal;
+    text-transform: capitalize;
+    transition: .3s;
+}
+
+.footer .btn.btn-link::before {
+    position: relative;
+    content: "\f105";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 10px;
+}
+
+.footer .btn.btn-link:hover {
+    color: var(--primary) !important;
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
+.footer .form-control {
+    border-color: rgba(255,255,255,0.5);
+}
+
+.footer .copyright {
+    padding: 25px 0;
+    font-size: 15px;
+    border-top: 1px solid rgba(256, 256, 256, .1);
+}
+
+.footer .copyright a {
+    color: #FFFFFF;
+}
+
+.footer .footer-menu a {
+    margin-right: 15px;
+    padding-right: 15px;
+    border-right: 1px solid rgba(255, 255, 255, .1);
+}
+
+.footer .copyright a:hover,
+.footer .footer-menu a:hover {
+    color: var(--primary) !important;
+}
+
+.footer .footer-menu a:last-child {
+    margin-right: 0;
+    padding-right: 0;
+    border-right: none;
+}
+
+/* Small Devices (up to 576px) */
+@media (max-width: 576px) {
+    /* Navbar */
+    /* Basic Nav Item Styling */
+.nav-item {
+    position: relative;
+    list-style-type: none;
+}
+
+/* Dropdown Toggle Link Styling */
+.nav-link.dropdown-toggle {
+    cursor: pointer;
+    text-decoration: none;
+    color: #007bff;
+    padding: 8px 16px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/* Hover effect for dropdown links */
+.nav-link.dropdown-toggle:hover {
+    color: #0056b3;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    padding: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 0 0 .25rem .25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    list-style-type: none;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Show dropdown menu when hovering the parent nav item */
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+/* Dropdown Item Styling */
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Hover effect for dropdown items */
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* Border-radius for rounded bottom dropdown */
+.dropdown-menu {
+    border-radius: 0 0 .25rem .25rem;
+}
+
+/* Optional: Drop shadow for dropdown */
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .navbar .navbar-brand h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+    .navbar .navbar-brand img {
+        height: 40px;
+    }
+    .navbar .navbar-nav {
+        margin-top: 10px;
+        padding: 10px 0;
+    }
+    .navbar .navbar-nav .nav-link {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+    .navbar .collapse.navbar-collapse {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+    .navbar .dropdown-menu {
+        padding: 8px 10px;
+    }
+    .navbar .dropdown-menu .dropdown-item {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    /* Carousel */
+    .header-carousel .owl-carousel-item {
+        min-height: 400px;
+    }
+    .header-carousel .owl-carousel-item h1 {
+        font-size: 1.8rem;
+    }
+    .header-carousel .owl-carousel-item p {
+        font-size: 0.85rem;
+    }
+    .header-carousel .owl-nav {
+        right: 5%;
+    }
+    .header-carousel .owl-nav .owl-prev,
+    .header-carousel .owl-nav .owl-next {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    /* College Events */
+    .container-xxl.py-5 {
+        padding: 20px 15px;
+    }
+    #eventsCarousel .carousel-item h3 {
+        font-size: 1.2rem;
+    }
+    #eventsCarousel .carousel-item h4 {
+        font-size: 1rem;
+    }
+    #eventsCarousel .carousel-item p {
+        font-size: 0.85rem;
+    }
+    #eventsCarousel .carousel-control-prev,
+    #eventsCarousel .carousel-control-next {
+        width: 30px;
+        height: 30px;
+    }
+    #eventsCarousel .carousel-indicators button {
+        width: 8px;
+        height: 8px;
+    }
+
+    /* Facilities */
+    .facility-item .facility-icon {
+        width: 80px;
+        height: 80px;
+    }
+    .facility-item .facility-text {
+        min-height: 200px;
+        padding: 20px;
+    }
+    .facility-item .facility-text h3 {
+        font-size: 1.1rem;
+    }
+    .facility-item .facility-text p {
+        font-size: 0.8rem;
+    }
+
+    /* About */
+    .about-img .col-12 img.w-75 {
+        width: 60%;
+    }
+    .about-img .col-6 img {
+        width: 80%;
+    }
+    .about-img .col-6 {
+        margin-top: -100px;
+    }
+    #about_page h1 {
+        font-size: 1.8rem;
+    }
+    #about_page p {
+        font-size: 0.85rem;
+    }
+    .about-img .btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Faculty */
+    #faculty_page h1 {
+        font-size: 1.8rem;
+    }
+    #faculty_page p {
+        font-size: 0.85rem;
+    }
+    .team-item img {
+        width: 60% !important;
+        height: 250px !important;
+    }
+    .team-item h3 {
+        font-size: 1.1rem;
+        margin-left: 0;
+        text-align: center;
+    }
+    .team-item .d-flex {
+        margin-left: 0;
+        justify-content: center;
+    }
+    .team-item .btn-square {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+
+    /* Back to Top */
+    .back-to-top {
+        right: 20px;
+        bottom: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+/* Medium Devices (576px to 768px) */
+@media (min-width: 576.98px) and (max-width: 768px) {
+    /* Navbar */
+    /* Basic Nav Item Styling */
+.nav-item {
+    position: relative;
+    list-style-type: none;
+}
+
+/* Dropdown Toggle Link Styling */
+.nav-link.dropdown-toggle {
+    cursor: pointer;
+    text-decoration: none;
+    color: #007bff;
+    padding: 8px 16px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/* Hover effect for dropdown links */
+.nav-link.dropdown-toggle:hover {
+    color: #0056b3;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    padding: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 0 0 .25rem .25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    list-style-type: none;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Show dropdown menu when hovering the parent nav item */
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+/* Dropdown Item Styling */
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Hover effect for dropdown items */
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* Border-radius for rounded bottom dropdown */
+.dropdown-menu {
+    border-radius: 0 0 .25rem .25rem;
+}
+
+/* Optional: Drop shadow for dropdown */
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .navbar .navbar-brand h1 {
+        font-size: 1.8rem;
+    }
+    .navbar .navbar-brand img {
+        height: 50px;
+    }
+    .navbar .navbar-nav .nav-link {
+        padding: 10px 12px;
+        font-size: 1rem;
+    }
+    .navbar .collapse.navbar-collapse {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+    .navbar .dropdown-menu {
+        padding: 10px 12px;
+    }
+    .navbar .dropdown-menu .dropdown-item {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+
+    /* Carousel */
+    .header-carousel .owl-carousel-item {
+        min-height: 450px;
+    }
+    .header-carousel .owl-carousel-item h1 {
+        font-size: 2rem;
+    }
+    .header-carousel .owl-carousel-item p {
+        font-size: 0.9rem;
+    }
+    .header-carousel .owl-nav {
+        right: 6%;
+    }
+    .header-carousel .owl-nav .owl-prev,
+    .header-carousel .owl-nav .owl-next {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    /* College Events */
+    .container-xxl.py-5 {
+        padding: 30px 20px;
+    }
+    #eventsCarousel .carousel-item h3 {
+        font-size: 1.4rem;
+    }
+    #eventsCarousel .carousel-item h4 {
+        font-size: 1.1rem;
+    }
+    #eventsCarousel .carousel-item p {
+        font-size: 0.9rem;
+    }
+    #eventsCarousel .carousel-control-prev,
+    #eventsCarousel .carousel-control-next {
+        width: 35px;
+        height: 35px;
+    }
+    #eventsCarousel .carousel-indicators button {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Facilities */
+    .facility-item .facility-icon {
+        width: 90px;
+        height: 90px;
+    }
+    .facility-item .facility-text {
+        min-height: 220px;
+        padding: 25px;
+    }
+    .facility-item .facility-text h3 {
+        font-size: 1.2rem;
+    }
+    .facility-item .facility-text p {
+        font-size: 0.85rem;
+    }
+
+    /* About */
+    .about-img .col-12 img.w-75 {
+        width: 70%;
+    }
+    .about-img .col-6 img {
+        width: 90%;
+    }
+    .about-img .col-6 {
+        margin-top: -120px;
+    }
+    #about_page h1 {
+        font-size: 2rem;
+    }
+    #about_page p {
+        font-size: 0.9rem;
+    }
+    .about-img .btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+
+    /* Faculty */
+    #faculty_page h1 {
+        font-size: 2rem;
+    }
+    #faculty_page p {
+        font-size: 0.9rem;
+    }
+    .team-item img {
+        width: 70% !important;
+        height: 300px !important;
+    }
+    .team-item h3 {
+        font-size: 1.2rem;
+        margin-left: 0;
+        text-align: center;
+    }
+    .team-item .d-flex {
+        margin-left: 0;
+        justify-content: center;
+    }
+    .team-item .btn-square {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    /* Back to Top */
+    .back-to-top {
+        right: 30px;
+        bottom: 30px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Large Devices (768px to 992px) */
+@media (min-width: 768.98px) and (max-width: 991.98px) {
+    /* Navbar */
+    /* Basic Nav Item Styling */
+.nav-item {
+    position: relative;
+    list-style-type: none;
+}
+
+/* Dropdown Toggle Link Styling */
+.nav-link.dropdown-toggle {
+    cursor: pointer;
+    text-decoration: none;
+    color: #007bff;
+    padding: 8px 16px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/* Hover effect for dropdown links */
+.nav-link.dropdown-toggle:hover {
+    color: #0056b3;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    padding: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 0 0 .25rem .25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    list-style-type: none;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Show dropdown menu when hovering the parent nav item */
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+/* Dropdown Item Styling */
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Hover effect for dropdown items */
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* Border-radius for rounded bottom dropdown */
+.dropdown-menu {
+    border-radius: 0 0 .25rem .25rem;
+}
+
+/* Optional: Drop shadow for dropdown */
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .navbar .navbar-brand h1 {
+        font-size: 2rem;
+    }
+    .navbar .navbar-brand img {
+        height: 55px;
+    }
+    .navbar .navbar-nav .nav-link {
+        padding: 12px 15px;
+        font-size: 1.1rem;
+    }
+    .navbar .collapse.navbar-collapse {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+    .navbar .dropdown-menu {
+        padding: 10px 15px;
+    }
+    .navbar .dropdown-menu .dropdown-item {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+
+    /* Carousel */
+    .header-carousel .owl-carousel-item {
+        min-height: 500px;
+    }
+    .header-carousel .owl-carousel-item h1 {
+        font-size: 2.2rem;
+    }
+    .header-carousel .owl-carousel-item p {
+        font-size: 1rem;
+    }
+    .header-carousel .owl-nav {
+        right: 7%;
+    }
+    .header-carousel .owl-nav .owl-prev,
+    .header-carousel .owl-nav .owl-next {
+        width: 42px;
+        height: 42px;
+        font-size: 21px;
+    }
+
+    /* College Events */
+    .container-xxl.py-5 {
+        padding: 40px 25px;
+    }
+    #eventsCarousel .carousel-item h3 {
+        font-size: 1.6rem;
+    }
+    #eventsCarousel .carousel-item h4 {
+        font-size: 1.2rem;
+    }
+    #eventsCarousel .carousel-item p {
+        font-size: 1rem;
+    }
+    #eventsCarousel .carousel-control-prev,
+    #eventsCarousel .carousel-control-next {
+        width: 40px;
+        height: 40px;
+    }
+    #eventsCarousel .carousel-indicators button {
+        width: 12px;
+        height: 12px;
+    }
+
+    /* Facilities */
+    .facility-item .facility-icon {
+        width: 95px;
+        height: 95px;
+    }
+    .facility-item .facility-text {
+        min-height: 240px;
+        padding: 28px;
+    }
+    .facility-item .facility-text h3 {
+        font-size: 1.3rem;
+    }
+    .facility-item .facility-text p {
+        font-size: 0.9rem;
+    }
+
+    /* About */
+    .about-img .col-12 img.w-75 {
+        width: 75%;
+    }
+    .about-img .col-6 img {
+        width: 95%;
+    }
+    .about-img .col-6 {
+        margin-top: -130px;
+    }
+    #about_page h1 {
+        font-size: 2.2rem;
+    }
+    #about_page p {
+        font-size: 1rem;
+    }
+    .about-img .btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+
+    /* Faculty */
+    #faculty_page h1 {
+        font-size: 2.2rem;
+    }
+    #faculty_page p {
+        font-size: 1rem;
+    }
+    .team-item img {
+        width: 75% !important;
+        height: 350px !important;
+    }
+    .team-item h3 {
+        font-size: 1.3rem;
+        margin-left: 0;
+        text-align: center;
+    }
+    .team-item .d-flex {
+        margin-left: 0;
+        justify-content: center;
+    }
+    .team-item .btn-square {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    /* Back to Top */
+    .back-to-top {
+        right: 35px;
+        bottom: 35px;
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+}

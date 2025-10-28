@@ -1,0 +1,608 @@
+{% extends 'dashboard.html' %}
+
+{% block main %}
+
+<style>
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2c3e50;
+        --accent-color: #e74c3c;
+        --success-color: #2ecc71;
+        --light-color: #f8f9fa;
+        --dark-color: #2c3e50;
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+        color: var(--dark-color);
+        line-height: 1.6;
+    }
+
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 1.8rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 15px 15px;
+    }
+
+    .dashboard-title {
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .dashboard-title i {
+        margin-right: 12px;
+        font-size: 1.5rem;
+    }
+
+    .dashboard-subtitle {
+        opacity: 0.9;
+        font-size: 1rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 1.8rem;
+        overflow: hidden;
+        background: white;
+    }
+
+    .card-header {
+        background: linear-gradient(to right, rgba(244, 246, 247, 0.1), rgba(44, 62, 80, 0.05));
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.2rem 1.5rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header i {
+        color: var(--primary-color);
+        margin-right: 8px;
+    }
+
+    .student-count {
+        background: var(--primary-color);
+        color: white;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    /* Desktop Table Styles */
+    .desktop-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .desktop-table thead th {
+        background: linear-gradient(to bottom, var(--primary-color), #2980b9);
+        color: white;
+        padding: 15px 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .desktop-table tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+        transition: all 0.2s ease;
+    }
+
+    .desktop-table tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+    }
+
+    .desktop-table td {
+        padding: 14px 12px;
+        vertical-align: middle;
+    }
+
+    /* Mobile Card Styles */
+    .mobile-student-cards {
+        display: none;
+    }
+
+    .student-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e1e5eb;
+        transition: all 0.3s ease;
+    }
+
+    .student-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .student-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .student-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 12px;
+        border: 3px solid #e1e5eb;
+    }
+
+    .student-basic-info {
+        flex: 1;
+    }
+
+    .student-name {
+        font-weight: 700;
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .student-id {
+        color: #6c757d;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .student-details {
+        display: grid;
+        gap: 0.8rem;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        min-width: 120px;
+    }
+
+    .detail-value {
+        color: var(--dark-color);
+        font-size: 0.9rem;
+        text-align: right;
+        flex: 1;
+    }
+
+    .status-active {
+        background-color: rgba(46, 204, 113, 0.15);
+        color: var(--success-color);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .status-active:before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--success-color);
+        margin-right: 6px;
+    }
+
+    .course-badge {
+        background: rgba(52, 152, 219, 0.1);
+        color: var(--primary-color);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .search-container {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-container i {
+        position: absolute;
+        left: 18px;
+        top: 14px;
+        color: var(--primary-color);
+        z-index: 10;
+    }
+
+    .search-input {
+        padding: 12px 20px 12px 45px;
+        border-radius: 50px;
+        border: 1px solid #e1e5eb;
+        height: 50px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.15);
+    }
+
+    .search-btn {
+        background: linear-gradient(to right, var(--primary-color), #2980b9);
+        border: none;
+        border-radius: 50px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        margin-left: 10px;
+        transform: translateY(-8px);
+    }
+
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #dee2e6;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 768px) {
+        .desktop-table-container {
+            display: none;
+        }
+        
+        .mobile-student-cards {
+            display: block;
+        }
+        
+        .dashboard-header {
+            padding: 1.2rem 0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .dashboard-title {
+            font-size: 1.5rem;
+        }
+        
+        .card {
+            margin: 0.5rem;
+        }
+        
+        .search-form {
+            flex-direction: column;
+        }
+        
+        .search-container {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .search-btn {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        
+        .student-card {
+            padding: 1rem;
+        }
+        
+        .student-avatar {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .student-name {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .dashboard-header {
+            padding: 1rem 0;
+        }
+        
+        .dashboard-title {
+            font-size: 1.3rem;
+        }
+        
+        .student-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .student-avatar {
+            margin-right: 0;
+            margin-bottom: 8px;
+        }
+        
+        .detail-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.3rem;
+        }
+        
+        .detail-value {
+            text-align: left;
+            width: 100%;
+        }
+        
+        .student-card {
+            padding: 0.8rem;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .mobile-student-cards {
+            display: none;
+        }
+        
+        .desktop-table-container {
+            display: block;
+        }
+    }
+</style>
+
+<div class="dashboard-header">
+    <div class="container">
+        <h1 class="dashboard-title">
+            <i class="fas fa-user-graduate"></i>Student Management
+        </h1>
+        <p class="dashboard-subtitle">View and manage all student records</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <i class="fas fa-list"></i> Student Records
+            </div>
+            <div class="student-count">
+                {{ page_obj.paginator.count }} Students
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <form action="{% url 'view_students' %}" method="post" class="search-form d-flex">
+                        {% csrf_token %}
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" name="search_query" class="form-control search-input" placeholder="Search by name, email, or course...">
+                        </div>
+                        <button type="submit" class="btn btn-primary search-btn">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Desktop Table View -->
+            <div class="desktop-table-container">
+                <div class="table-responsive">
+                    <table class="desktop-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Student</th>
+                                <th>Email</th>
+                                <th>Course</th>
+                                <th>Enrollment Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in page_obj %}
+                            <tr>
+                                <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+                                <td>
+                                    <div style="display: flex; align-items: center;">
+                                        <img src="{{ student.customstudent.student_image.url }}" alt="Student" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600;">{{ student.first_name }} {{ student.last_name }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ student.email }}</td>
+                                <td>
+                                    <span class="course-badge">{{ student.customstudent.course }}</span>
+                                </td>
+                                <td>{{ student.date_joined|date:"M j, Y" }}</td>
+                                <td>
+                                    {% if student.is_active %}
+                                    <span class="status-active">active</span>
+                                    {% else %}
+                                    <span class="status-active">inactive</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-user-slash"></i>
+                                        <h4>No students found</h4>
+                                        <p>Try adjusting your search criteria</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="mobile-student-cards">
+                {% for student in page_obj %}
+                <div class="student-card">
+                    <div class="student-header">
+                        <img src="{{ student.customstudent.student_image.url }}" alt="Student" class="student-avatar">
+                        <div class="student-basic-info">
+                            <div class="student-name">{{ student.first_name }} {{ student.last_name }}</div>
+                            <div class="student-id">ID: {{ forloop.counter0|add:page_obj.start_index }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="student-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">{{ student.email }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Course:</span>
+                            <span class="detail-value">
+                                <span class="course-badge">{{ student.customstudent.course }}</span>
+                            </span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Enrollment Date:</span>
+                            <span class="detail-value">{{ student.date_joined|date:"M j, Y" }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">
+                                {% if student.is_active %}
+                                    <span class="status-active">active</span>
+                                    {% else %}
+                                    <span class="status-active">inactive</span>
+                                    {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-user-slash"></i>
+                    <h4>No students found</h4>
+                    <p>Try adjusting your search criteria</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.paginator.num_pages > 1 %}
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="First">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Last">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+
+{% endblock %}
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}

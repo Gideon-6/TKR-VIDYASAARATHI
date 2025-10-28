@@ -1,0 +1,295 @@
+{% extends 'adminDashboard.html' %}
+
+{% block main %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info text-center" role="alert">{{message}}</div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="card shadow-sm border-light"> 
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-primary">All Faculty Members</h5>
+                    <i class="fas fa-users fa-lg text-secondary"></i>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table class="table table-hover table-striped nowrap" id="facultyTable" style="width:100%">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>Date Joined</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fac in faculty %}
+                                <tr class="faculty-row">
+                                    <td data-label="ID" class="fw-bold">{{ fac.id }}</td>
+                                    <td data-label="Photo">
+                                        <div class="no-image bg-light rounded-circle d-flex align-items-center justify-content-center border" 
+                                             style="width:50px;height:50px;">
+                                            <i class="fas fa-user text-muted fa-lg"></i>
+                                        </div>
+                                    </td>
+                                    <td data-label="Name" class="text-primary fw-bold">{{ fac.user.get_full_name }}</td>
+                                    <td data-label="Email">{{ fac.user.email }}</td>
+                                    <td data-label="Department"><span class="badge bg-info bg-opacity-10 text-info border border-info">{{ fac.department}}</span></td>
+                                    <td data-label="Date Joined">{{ fac.user.date_joined|date:"d M Y" }}</td>
+                                    <td data-label="Status">
+                                        <span class="badge {% if fac.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {% if fac.user.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                    <td data-label="Actions">
+                                        <div class="d-grid gap-2">
+                                            <a href="{% url 'delete_faculty' fac.user_id %}" class="btn btn-danger btn-sm" title="Delete">
+                                                <i class="fas fa-trash-alt"></i> DELETE
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted py-4">No faculty members found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {% if is_paginated %}
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    let facultyDataTable;
+    const breakpoint = 768; // Tablet breakpoint
+
+    function initializeDataTable() {
+        const screenWidth = $(window).width();
+        const isDataTableInitialized = $.fn.DataTable.isDataTable('#facultyTable');
+
+        if (screenWidth >= breakpoint) {
+            // Initialize or re-initialize DataTables for desktop/tablet views
+            if (!isDataTableInitialized) {
+                facultyDataTable = $('#facultyTable').DataTable({
+                    responsive: true,
+                    scrollX: true,
+                    // Minimal DOM structure for cleaner integration
+                    dom: '<"top"lf>rt<"bottom"ip><"clear">', 
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search faculty...",
+                    },
+                    columnDefs: [
+                        { responsivePriority: 1, targets: 0 }, // ID
+                        { responsivePriority: 2, targets: 2 }, // Name
+                        { responsivePriority: 3, targets: 3 }, // Email
+                        { responsivePriority: 4, targets: -1 } // Actions
+                    ]
+                });
+            }
+        } else if (isDataTableInitialized) {
+            // Destroy DataTables instance for small mobile screens
+            $('#facultyTable').DataTable().destroy(); 
+            // Remove DataTables specific classes and styles
+            $('#facultyTable').removeClass('dataTable no-footer');
+            $('#facultyTable tbody tr').css('display', '');
+            $('#facultyTable tbody td').css('display', '');
+        }
+    }
+
+    $(document).ready(function() {
+        // Initial setup
+        initializeDataTable(); 
+        
+        // Handle screen rotation/resize
+        $(window).on('resize', function() {
+            initializeDataTable();
+        });
+    });
+</script>
+
+<style>
+    /* ---------------------------------- */
+    /* General Styles and Desktop Cleanup */
+    /* ---------------------------------- */
+
+    #facultyTable {
+        border-collapse: collapse !important;
+    }
+    
+    .dataTables_wrapper {
+        margin-top: 20px;
+        position: relative;
+        clear: both;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    /* ---------------------------------- */
+    /* Mobile-Specific Card View Styles */
+    /* ---------------------------------- */
+    
+    @media (max-width: 767.98px) {
+        
+        /* Hide DataTables controls */
+        .dataTables_wrapper .row {
+            display: none;
+        }
+
+        /* Hide table headers on mobile */
+        #facultyTable thead {
+            display: none;
+        }
+
+        /* Mobile Card Style - Soft and Attractive */
+        #facultyTable tbody tr {
+            display: block;
+            margin-bottom: 1.25rem;
+            border: 1px solid #d1e7dd; 
+            border-left: 5px solid var(--bs-primary); 
+            border-radius: 0.75rem; 
+            background-color: #f8f9fa; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            transition: all 0.2s ease-in-out;
+            /* REDUCED FONT SIZE FOR THE ENTIRE ROW */
+            font-size: 0.9em; 
+        }
+
+        #facultyTable tbody tr:hover {
+            background-color: #ffffff; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style table data cells as key/value pairs */
+        #facultyTable tbody td {
+            display: block;
+            text-align: right !important; 
+            border: none; 
+            padding: 0.35rem 0.5rem;
+            position: relative;
+            padding-left: 45%; 
+        }
+        
+        /* Create the attractive "Label" for each piece of data */
+        #facultyTable tbody td::before {
+            content: attr(data-label) ":"; 
+            position: absolute;
+            left: 10px;
+            width: 40%;
+            text-align: left; 
+            font-weight: 600; 
+            color: var(--bs-secondary); 
+            /* REDUCED FONT SIZE FOR THE LABEL */
+            font-size: 0.9em; 
+        }
+        
+        /* Photo and Name Styling */
+        #facultyTable tbody td[data-label="Photo"] {
+            text-align: center !important;
+            padding-left: 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e9ecef; 
+        }
+        
+        #facultyTable tbody td[data-label="Photo"]::before {
+            content: none; 
+        }
+
+        /* FIXED: Faculty Name - Remove right padding and center properly */
+        #facultyTable tbody td[data-label="Name"] {
+            text-align: center !important;
+            /* MAINTAINING SLIGHTLY LARGER FONT FOR THE NAME */
+            font-size: 1.1em; 
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+            /* FIX: Remove the left padding that was creating space */
+            padding-left: 0 !important;
+            /* Ensure full width utilization */
+            width: 100%;
+        }
+        
+        /* FIX: Remove the ::before pseudo-element for Name field */
+        #facultyTable tbody td[data-label="Name"]::before {
+            content: none !important;
+        }
+
+        /* Actions Button Styling */
+        #facultyTable tbody td[data-label="Actions"] {
+            text-align: center !important;
+            padding-left: 0;
+            padding-top: 1rem;
+            border-top: 1px dashed #adb5bd; 
+        }
+        
+        #facultyTable tbody td[data-label="Actions"]::before {
+            content: ""; 
+        }
+        
+        /* Ensure the Delete button is full-width and easy to tap */
+        #facultyTable tbody td[data-label="Actions"] .d-grid {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

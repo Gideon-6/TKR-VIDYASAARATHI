@@ -1,0 +1,269 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+
+{% block main %}
+<style>
+    /* All your CSS remains unchanged */
+    :root {
+        --primary-color: #7d898f;
+        --secondary-color: #4c5a61;
+        --accent-color: #4cc9f0;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4bb543;
+    }
+
+    body {
+        background-color: #f5f7fa;
+        color: var(--dark-color);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid white;
+        object-fit: cover;
+        margin: 0 auto 1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-body {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 2rem;
+    }
+
+    .profile-section {
+        flex: 1;
+        min-width: 300px;
+        padding: 1rem;
+    }
+
+    .section-title {
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        width: 50px;
+        background: var(--accent-color);
+    }
+
+    .info-item {
+        display: flex;
+        margin-bottom: 1rem;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(67, 97, 238, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: var(--primary-color);
+    }
+
+    .info-content h4 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .info-content p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .progress-bar {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        border-radius: 4px;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        background: rgba(67, 97, 238, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+        transition: 0.3s ease;
+    }
+
+    .social-link:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+    }
+</style>
+
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-header">
+            {% if image_url %}
+                <img src="{{ image_url }}" alt="Student Photo" class="profile-pic">
+            {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="Default Photo" class="profile-pic">
+            {% endif %}
+            <h1 class="profile-name">{{ get_user.get_full_name|default:get_user.username }}</h1>
+            <p class="profile-title">
+                {% if student and student.course %}
+                    {{ student.course }} Student
+                {% else %}
+                    Student
+                {% endif %}
+                {% if get_user.date_joined %}
+                    | Joined: {{ get_user.date_joined|date:"Y" }}
+                {% endif %}
+            </p>
+            
+        </div>
+
+        <div class="profile-body">
+            <div class="profile-section">
+                <h2 class="section-title">About Me</h2>
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-user-graduate"></i></div>
+                    <div class="info-content">
+                        <h4>Username</h4>
+                        <p>{{ get_user.username }}</p>
+                    </div>
+                </div>
+
+                {% if student and student.course %}
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-book"></i></div>
+                    <div class="info-content">
+                        <h4>Course</h4>
+                        <p>{{ student.course }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if student and student.dob %}
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-birthday-cake"></i></div>
+                    <div class="info-content">
+                        <h4>Date of Birth</h4>
+                        <p>{{ student.dob|date:"F d, Y" }}</p>
+                        <p>Age: {{ student.dob|timesince }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if student and student.gender %}
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-venus-mars"></i></div>
+                    <div class="info-content">
+                        <h4>Gender</h4>
+                        <p>{{ student.gender }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">Contact Info</h2>
+
+                {% if get_user.email %}
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="info-content">
+                        <h4>Email</h4>
+                        <p>{{ get_user.email }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if student and student.phone_number %}
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-phone"></i></div>
+                    <div class="info-content">
+                        <h4>Phone</h4>
+                        <p>{{ student.phone_number }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="info-content">
+                        <h4>Account Created</h4>
+                        <p>{{ get_user.date_joined|date:"F d, Y" }} ({{ get_user.date_joined|timesince }} ago)</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
+                    <div class="info-content">
+                        <h4>Last Login</h4>
+                        <p>{{ get_user.last_login|date:"F d, Y H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}

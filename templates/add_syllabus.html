@@ -1,0 +1,218 @@
+{% extends 'dashboard.html' %}
+
+{% block main %}
+
+    <style>
+        .syllabus-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .unit-card {
+            background-color: white;
+            border-left: 4px solid #0d6efd;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .unit-card:hover {
+            transform: translateY(-3px);
+        }
+        .unit-header {
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            cursor: pointer;
+        }
+        .unit-body {
+            padding: 20px;
+        }
+        .btn-add-unit {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-add-unit:hover {
+            background-color: #0b5ed7;
+            transform: scale(1.02);
+        }
+        .form-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
+
+    <div class="container py-5">
+        <div class="syllabus-container">
+            {% if messages %}
+            {% for message in messages %}
+            <p class="text-primary text-center">{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            <h2 class="form-title">Syllabus Units Management</h2>
+            
+            <form id="syllabusForm" method="POST" action="{% url 'add_syllabus' %}">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="courseTitle" class="form-label fw-bold">Course Title</label>
+                    <input type="text" class="form-control" id="courseTitle" name="course_title" placeholder="Enter course title" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="courseCode" class="form-label fw-bold">Course Code</label>
+                    <input type="text" class="form-control" id="courseCode" name="course_code" placeholder="Enter course code" required>
+                </div>
+
+                <div class="col-md-4 mb-4 w-100">
+                    <label for="academicYear" class="form-label fw-bold">Academic Year</label>
+                    <select class="form-select" id="academicYear" name="academic_year" required>
+                        {% for years in get_years %}
+                        <option value="{{years.academic_years}}">{{years.academic_years}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-4 w-100">
+                    <label for="semester" class="form-label fw-bold">Semester</label>
+                    <select class="form-select" id="semester" name="semester" required>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="8">Semester 8</option>
+                    </select>
+                </div>
+                
+                <h5 class="mb-3 fw-bold">Units</h5>
+                <div id="unitsContainer">
+                    <!-- Default 5 units will be added here -->
+                    {% for i in "12345" %}
+                    <div class="unit-card">
+                        <div class="unit-header d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Unit {{i}}</span>
+                            <button type="button" class="btn btn-sm btn-danger remove-unit">Remove</button>
+                        </div>
+                        <div class="unit-body">
+                            <div class="mb-3">
+                                <label for="unitTitle{{i}}" class="form-label">Unit Title</label>
+                                <input type="text" class="form-control unit-title" id="unitTitle{{i}}" name="unit_title_{{i}}" placeholder="Enter unit title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="unitDescription{{i}}" class="form-label">Description</label>
+                                <textarea class="form-control" id="unitDescription{{i}}" name="unit_description_{{i}}" rows="3" placeholder="Enter unit description"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="w-100 mb-3">
+                                    <label for="unitResources{{i}}" class="form-label">Resources</label>
+                                    <input type="text" class="form-control" id="unitResources{{i}}" name="unit_resources_{{i}}" placeholder="Required resources">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" id="addUnitBtn" class="btn btn-add-unit">
+                        <i class="bi bi-plus-circle"></i> Add New Unit
+                    </button>
+                    <button type="submit" class="btn btn-success px-4">
+                        Save Syllabus
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let unitCount = 5; // Starting with 5 units
+            
+            // Add new unit
+            document.getElementById('addUnitBtn').addEventListener('click', function() {
+                unitCount++;
+                const newUnit = document.createElement('div');
+                newUnit.className = 'unit-card';
+                newUnit.innerHTML = `
+                    <div class="unit-header d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Unit ${unitCount}</span>
+                        <button type="button" class="btn btn-sm btn-danger remove-unit">Remove</button>
+                    </div>
+                    <div class="unit-body">
+                        <div class="mb-3">
+                            <label for="unitTitle${unitCount}" class="form-label">Unit Title</label>
+                            <input type="text" class="form-control unit-title" id="unitTitle${unitCount}" name="unit_title_${unitCount}" placeholder="Enter unit title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="unitDescription${unitCount}" class="form-label">Description</label>
+                            <textarea class="form-control" id="unitDescription${unitCount}" name="unit_description_${unitCount}" rows="3" placeholder="Enter unit description"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="unitDuration${unitCount}" class="form-label">Duration (hours)</label>
+                                <input type="number" class="form-control" id="unitDuration${unitCount}" name="unit_duration_${unitCount}" placeholder="Estimated duration">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="unitResources${unitCount}" class="form-label">Resources</label>
+                                <input type="text" class="form-control" id="unitResources${unitCount}" name="unit_resources_${unitCount}" placeholder="Required resources">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('unitsContainer').appendChild(newUnit);
+            });
+            
+            // Remove unit
+            document.getElementById('unitsContainer').addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-unit')) {
+                    if (document.querySelectorAll('.unit-card').length > 1) {
+                        e.target.closest('.unit-card').remove();
+                        // Renumber remaining units
+                        const units = document.querySelectorAll('.unit-card');
+                        units.forEach((unit, index) => {
+                            unit.querySelector('.unit-header span').textContent = `Unit ${index + 1}`;
+                            // Update all input names to maintain sequential numbering
+                            const inputs = unit.querySelectorAll('input, textarea');
+                            inputs.forEach(input => {
+                                const nameParts = input.name.split('_');
+                                nameParts[nameParts.length - 1] = index + 1;
+                                input.name = nameParts.join('_');
+                                input.id = input.name.replace(/_/g, '');
+                            });
+                        });
+                        unitCount = units.length;
+                    } else {
+                        alert('You must have at least one unit.');
+                    }
+                }
+            });
+            
+            // Form submission - now handled by Django's form submission
+            // The data will be sent as form data which Django can process
+        });
+    </script>
+
+{% endblock %}
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}

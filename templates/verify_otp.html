@@ -1,0 +1,194 @@
+{% extends 'index.html' %}
+
+{% block main %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card shadow-lg border-0 rounded-lg mt-5 animate__animated animate__fadeIn">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center mb-0 py-3">Verify Your Identity</h3>
+                </div>
+                <div class="card-body px-5 py-4">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-shield-alt fa-4x text-primary mb-3"></i>
+                        <p class="lead">We've sent a 6-digit OTP to your email</p>
+                        <small class="text-muted">Please check your inbox and enter the code below</small>
+                    </div>
+
+                    <form action="{% url 'verify_student_otp' %}" method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {% for message in messages %}
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="form-floating mb-4">
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="otp" 
+                                   name="otp" 
+                                   placeholder="Enter OTP" 
+                                   required
+                                   pattern="\d{6}"
+                                   maxlength="6"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            <label for="otp">OTP Code</label>
+                            <div class="invalid-feedback">
+                                Please enter a valid 6-digit OTP
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg py-3">
+                                <span class="submit-text">Verify & Continue</span>
+                                <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted">Didn't receive the code? 
+                            <a href="#" class="text-primary" id="resend-link">Resend OTP</a>
+                            <span id="countdown" class="text-muted ms-1 d-none">(0:30)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        border-radius: 0 !important;
+    }
+    
+    .form-floating>label {
+        padding: 1rem 1.25rem;
+        color: #6c757d;
+    }
+    
+    .form-control {
+        height: calc(3.5rem + 2px);
+        padding: 1rem 1.25rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(0, 51, 102, 0.25);
+    }
+    
+    .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+        background-color: #002244;
+        border-color: #002244;
+        transform: translateY(-2px);
+    }
+    
+    #resend-link {
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    
+    #resend-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<script>
+    // Form validation
+    (function() {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    // Show loading spinner
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.querySelector('.submit-text').classList.add('d-none');
+                    submitBtn.querySelector('.spinner-border').classList.remove('d-none');
+                    submitBtn.disabled = true;
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+    
+    // OTP Resend functionality
+    document.getElementById('resend-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Disable resend link and show countdown
+        this.classList.add('disabled');
+        const countdownEl = document.getElementById('countdown');
+        countdownEl.classList.remove('d-none');
+        
+        let timeLeft = 30;
+        const countdown = setInterval(() => {
+            countdownEl.textContent = `(${timeLeft})`;
+            timeLeft--;
+            
+            if (timeLeft < 0) {
+                clearInterval(countdown);
+                countdownEl.classList.add('d-none');
+                document.getElementById('resend-link').classList.remove('disabled');
+            }
+        }, 1000);
+        
+        // Here you would typically make an AJAX call to resend the OTP
+        console.log('OTP resend requested');
+        // fetch('/resend-otp/', { method: 'POST' })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data.success) {
+        //             showToast('New OTP sent successfully!');
+        //         }
+        //     });
+    });
+    
+    // Auto focus on OTP input
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('otp').focus();
+    });
+</script>
+{% endblock %}
+
+{% block facilities %}
+{% endblock %}
+
+{% block about %}
+{% endblock %}
+
+{% block faculty %}
+{% endblock %}
