@@ -87,52 +87,51 @@ This section details the primary user interfaces for each role.
 | Screen No. | Description | Image |
 | :---: | :--- | :---: |
 | **1** | **Home Page:** The initial landing page of the website. |  |
-![alt text](image-1.png)
+<img width="940" height="440" alt="image" src="https://github.com/user-attachments/assets/d24f3899-1122-47b3-bd95-144ab6d0d9ff" />
 | **2** | **Student Register Page:** Allows students to sign up with their name, email, and password. |  |
-![alt text](image-2.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/84831eec-6a1c-48fa-85ff-fcc418bc8c52" />
 | **3** | **Student Login:** Allows students to access their personalized dashboard. |  |
-![alt text](image-3.png)
+<img width="940" height="433" alt="image" src="https://github.com/user-attachments/assets/a792680f-8932-4928-b9ca-5f788145d34a" />
 | **4** | **Student Dashboard:** Provides students with easy access to academic resources, organized by branch and year. |  |
-![alt text](image-4.png)
+<img width="940" height="438" alt="image" src="https://github.com/user-attachments/assets/85ef0758-c25e-4a9b-b78f-69718a3233ed" />
 | **5** | **View Profile:** Students can view their personal and academic information. |  |
-![alt text](image-5.png)
+<img width="940" height="437" alt="image" src="https://github.com/user-attachments/assets/9dfefdc2-e3a4-4edc-b7c5-b74a6ab9b1d9" />
 | **6** | **View Courses:** Students can browse and access the list of courses. |  |
-![alt text](image-6.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/35980c0a-b919-453b-91be-931d1a9730e1" />
 | **7** | **View Syllabus:** Students can access and download the syllabus for their courses. |  |
-![alt text](image-7.png)
 | **8** | **Unit Preview:** Allows students to preview course units, learning objectives, and associated resources. |  |
-![alt text](image-8.png)
-![alt text](image-9.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/8f3fe084-1105-47c5-98d3-5d35cedd253a" />
+<img width="940" height="435" alt="image" src="https://github.com/user-attachments/assets/13fc3b2f-6a7d-4fa9-ad36-3777b83fb22e" />
 | **9** | **Faculty Login:** Faculty members securely log in to access their dashboard. |  |
-![alt text](image-10.png)
+<img width="940" height="469" alt="image" src="https://github.com/user-attachments/assets/9828aedf-56cb-46ed-8387-58b198309489" />
 | **10** | **Faculty Dashboard:** Allows faculty to manage and upload course materials, syllabi, and academic resources. |  |
-![alt text](image-11.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/c933d941-fcda-4957-aa03-36d79cc8f172" />
 | **11** | **View Syllabus:** Faculty members can upload, update, and manage the syllabus for their courses, including topics, descriptions, and related resources for students.|  |
-![alt text](image-13.png)
+<img width="940" height="438" alt="image" src="https://github.com/user-attachments/assets/d73fd5f0-b85d-48b2-aa56-37709618824d" />
 | **12** | **Add Syllabus:** Faculty can upload new syllabi providing details such as course title, description, and topics. |  |
-![alt text](image-14.png)
+<img width="940" height="432" alt="image" src="https://github.com/user-attachments/assets/0d05a8a8-6778-44a3-a116-27d4f3c1b04b" />
 | **13** | **Add Topics and PDFs:** Faculty members can add individual topics to the syllabus and upload related PDFs. |  |
-![alt text](image-15.png)
+<img width="940" height="436" alt="image" src="https://github.com/user-attachments/assets/766c48e4-39f9-443e-afb3-da149bfa0614" />
 | **14** | **Add Question Papers:** Faculty can upload previous year question papers in PDF format. |  |
-![alt text](image-16.png)
+<img width="940" height="433" alt="image" src="https://github.com/user-attachments/assets/fe2ca4bd-a32d-4195-81ef-73b32ba0a362" />
 | **15** | **View Students:** Faculty can view a list of registered students, including their details such as name, academic year, and branch, to manage and track their academic progress. |  |
-![alt text](image-17.png)
+<img width="940" height="433" alt="image" src="https://github.com/user-attachments/assets/e038d2bf-530a-44f1-a518-94e3cc403d21" />
 | **16** | **Admin Login Page:** Administrators securely log in to access the admin dashboard. |  |
-![alt text](image-18.png)
+<img width="940" height="437" alt="image" src="https://github.com/user-attachments/assets/5f054b3b-998f-4e68-a663-380743ae0971" />
 | **17** | **Admin Dashboard:** Administrators can manage academic structures such as years, semesters, and faculty records, as well as monitor and control user accounts (students and faculty), ensuring efficient academic operations. |  |
-![alt text](image-19.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/65e08f00-e4b6-42a2-bd91-fcbc9c0dde19" />
 | **18** | **Add Faculty:** Administrators can add new faculty members by entering their details. |  |
-![alt text](image-20.png)
+<img width="940" height="435" alt="image" src="https://github.com/user-attachments/assets/a4a1ac25-87a4-437b-a15d-a5725d12158b" />
 | **19** | **Add Academic Year:** Administrators define and add new academic years, specifying start/end dates and semesters. |  |
-![alt text](image-21.png)
+<img width="940" height="436" alt="image" src="https://github.com/user-attachments/assets/1c6a9b55-d1d3-4296-9aff-763e2e754ccf" />
 | **20** | **Add College Events:** Administrators can create and manage college events (name, date, time, description). |  |
-![alt text](image-22.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/0f7c5fdf-2f56-4b44-b28d-a148b44da4c7" />
 | **21** | **View Students:** Administrators can view the list of registered students, along with their details such as name, academic year, branch, and enrollment status, to manage and track student progress. |  |
-![alt text](image-25.png)
+<img width="940" height="434" alt="image" src="https://github.com/user-attachments/assets/6be52c68-4bee-4264-aa75-5e3012ae9127" />
 | **22** | **View Faculty:** Administrators can view the list of registered faculty members, along with their details such as name, department, courses taught, and contact information, to manage faculty records effectively. |  |
-![alt text](image-23.png)
+<img width="940" height="435" alt="image" src="https://github.com/user-attachments/assets/63d2cbf3-a6b3-4266-98fb-a431a1a48cd1" />
 | **23** | **View Events:** Administrators can view a list of upcoming and past college events, including details like event name, date, time, and description, to track and manage event schedules.|  |
-![alt text](image-24.png)
+<img width="940" height="435" alt="image" src="https://github.com/user-attachments/assets/0be13f3e-c65c-4446-968e-db7bdc3fb05a" />
 ---
 
 ## 6. CONCLUSION & FUTURE ENHANCEMENT
