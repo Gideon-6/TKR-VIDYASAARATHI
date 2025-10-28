@@ -114,7 +114,9 @@ This section details the primary user interfaces for each role.
 
 ### Screen 8: Unit Preview
 **Description:** Allows students to preview course units, learning objectives, and associated resources.
+
 <img width="566" height="271" alt="image" src="https://github.com/user-attachments/assets/6fc030ce-2e4d-4818-9d9f-ecb2330810a3" />
+
 <img width="601" height="181" alt="image" src="https://github.com/user-attachments/assets/4e923fa1-b6fe-44fb-b65f-dc29aa204af6" />
 
 ### Screen 9: Faculty Login
